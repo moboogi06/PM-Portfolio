@@ -60,7 +60,7 @@ export default function App() {
 
   const [defaultLang, setDefaultLang] = useState<"en" | "kr">(() => {
     const saved = localStorage.getItem("riot_esports_default_lang");
-    return (saved === "en" || saved === "kr") ? (saved as "en" | "kr") : "kr"; // Default to Korean as default load language
+    return (saved === "en" || saved === "kr") ? (saved as "en" | "kr") : "en"; // Default to English as default load language
   });
 
   const [language, setLanguage] = useState<"en" | "kr">(() => {
@@ -69,7 +69,7 @@ export default function App() {
       return savedLang;
     }
     const savedDefault = localStorage.getItem("riot_esports_default_lang");
-    return (savedDefault === "en" || savedDefault === "kr") ? (savedDefault as "en" | "kr") : "kr";
+    return (savedDefault === "en" || savedDefault === "kr") ? (savedDefault as "en" | "kr") : "en";
   });
 
   const [isAdminActive, setIsAdminActive] = useState(() => {
