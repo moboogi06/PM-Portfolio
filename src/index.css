@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "DM Sans", sans-serif;
+  --font-mono: "DM Sans", sans-serif;
+  
+  --color-brand-purple: #9d4edd;
+  --color-brand-dark-purple: #3c096c;
+  --color-brand-neon: #e0aaff;
+  --color-riot-red: #ff4655;
+  --color-valorant-teal: #0df5e3;
+  --color-riot-dark: #0b0e14;
+}
+
+@layer base {
+  body {
+    background-color: #05070c;
+    color: #e5e7eb;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.font-pretendard {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+}
+
+.font-pretendard .font-display,
+.font-pretendard .font-sans,
+.font-pretendard h1,
+.font-pretendard h2,
+.font-pretendard h3,
+.font-pretendard h4,
+.font-pretendard h5,
+.font-pretendard h6 {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+}
+
+/* Custom styles for glowing effects */
+.text-glow-purple {
+  text-shadow: 0 0 8px rgba(157, 78, 221, 0.25);
+}
+
+.text-glow-red {
+  text-shadow: 0 0 8px rgba(255, 70, 85, 0.3);
+}
+
+.text-glow-teal {
+  text-shadow: 0 0 8px rgba(13, 245, 227, 0.3);
+}
+
+.glow-card-purple {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(157, 78, 221, 0.15);
+}
+
+.glow-card-purple:hover {
+  border-color: rgba(157, 78, 221, 0.4);
+  box-shadow: 0 0 25px rgba(157, 78, 221, 0.15);
+}
+
+.glow-card-red {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 70, 85, 0.15);
+}
+
+.glow-card-red:hover {
+  border-color: rgba(255, 70, 85, 0.4);
+  box-shadow: 0 0 25px rgba(255, 70, 85, 0.15);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #05070c;
+}
+::-webkit-scrollbar-thumb {
+  background: #161b26;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff4655;
+}
+
+/* Print optimizations for clean PDF generation */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+  
+  /* Hide elements that shouldn't be printed */
+  header,
+  footer,
+  button,
+  .admin-panel-trigger,
+  .no-print,
+  .interactive-hint {
+    display: none !important;
+  }
+
+  /* Make containers print-friendly */
+  section {
+    page-break-inside: avoid;
+    background: transparent !important;
+    color: #111111 !important;
+    border-bottom: 1px solid #ddd !important;
+  }
+
+  /* Force light colors on elements for printing */
+  h1, h2, h3, h4, span, p, label, div {
+    color: #111111 !important;
+    text-shadow: none !important;
+  }
+
+  /* Keep layout margins proper */
+  .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+

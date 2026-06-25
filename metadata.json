@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Esports Partnership Portfolio",
+  "description": "Premium portfolio for an Esports Program \u0026 Partnership Manager, featuring major tournaments, regional operations, and brand partnerships.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
