@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Briefcase, TrendingUp, Cpu, Award, Zap, 
-  Send, Download, Settings, ChevronRight, CheckCircle
+  Send, Settings, ChevronRight, CheckCircle
 } from "lucide-react";
 
 import { PortfolioData, BilingualPortfolioData } from "./types";
@@ -13,7 +13,6 @@ import SkillsChart from "./components/SkillsChart";
 import StakeholderMap from "./components/StakeholderMap";
 import TimelineView from "./components/TimelineView";
 import AdminPanel from "./components/AdminPanel";
-import PdfPreview from "./components/PdfPreview";
 import { CAREER_HISTORY_DATA } from "./careerHistoryData";
 
 export default function App() {
@@ -82,7 +81,6 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("about");
   const [showReports, setShowReports] = useState(false);
   const [showFullHistory, setShowFullHistory] = useState(false);
-  const [isPdfHovered, setIsPdfHovered] = useState(false);
 
   const data = (bilingualData && bilingualData[language]) || (bilingualData && bilingualData.kr) || DEFAULT_PORTFOLIO_DATA.kr; // fallback to Korean or defaults if somehow undefined
 
@@ -1022,36 +1020,15 @@ export default function App() {
               : "An Esports Program Manager who delivers optimal value to both partners and fans, powered by global capability, data-driven analytics, and deep industry expertise. I am fully prepared to successfully execute your strategic vision and generate tangible results."}
           </p>
 
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5 max-w-lg mx-auto">
+          <div className="mt-12 flex justify-center max-w-xs mx-auto">
             {/* Email link */}
             <a
               href={`mailto:${data.contact.email}`}
-              className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-white px-6 py-4 text-xs font-bold uppercase tracking-widest text-black hover:opacity-90 active:scale-95 transition shadow-lg"
+              className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-white px-6 py-4 text-xs font-bold uppercase tracking-widest text-black hover:opacity-90 active:scale-95 transition shadow-lg text-center"
             >
               <Send className="h-4.5 w-4.5 shrink-0" />
               {language === "kr" ? "채용 제안 이메일 보내기" : "Send Career Proposal"}
             </a>
-
-            {/* Resume / Export button */}
-            <div 
-              className="relative w-full"
-              onMouseEnter={() => setIsPdfHovered(true)}
-              onMouseLeave={() => setIsPdfHovered(false)}
-            >
-              <button
-                onClick={() => window.print()}
-                className="no-print flex w-full items-center justify-center gap-2.5 rounded-lg border border-white/10 hover:border-white/20 bg-zinc-950 px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-300 hover:text-white active:scale-95 transition shadow-md"
-              >
-                <Download className="h-4.5 w-4.5 shrink-0" />
-                {language === "kr" ? "포트폴리오 PDF 저장" : "Save Portfolio PDF"}
-              </button>
-
-              <AnimatePresence>
-                {isPdfHovered && (
-                  <PdfPreview language={language} data={data} />
-                )}
-              </AnimatePresence>
-            </div>
           </div>
 
           <div className="mt-20 border-t border-white/5 pt-8 text-center text-xs font-mono text-zinc-600 tracking-widest uppercase font-bold">
