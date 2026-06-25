@@ -449,21 +449,19 @@ export default function App() {
                 </p>
 
                 {/* Project 1 Cover Image */}
-                {data.featuredProjects.chungnam.imageUrl && (
-                  <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 shadow-lg">
-                    <img 
-                      src={data.featuredProjects.chungnam.imageUrl} 
-                      alt={data.featuredProjects.chungnam.title}
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
-                      <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase tracking-widest">
-                        {data.featuredProjects.chungnam.imageOverlayText || (language === "kr" ? "공식 E스포츠 경기장 및 전용 베뉴" : "Official Arena & Stadium Center")}
-                      </span>
-                    </div>
+                <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 shadow-lg">
+                  <img 
+                    src="https://i.ibb.co/Hf7GGT9k/1.jpg" 
+                    alt={data.featuredProjects.chungnam.title}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                    <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase tracking-widest">
+                      {language === "kr" ? "국제/국내 e스포츠 대회" : "International/Domestic Esports Tournaments"}
+                    </span>
                   </div>
-                )}
+                </div>
 
                 <div className="space-y-4 pt-4 border-t border-white/5">
                   <div>
@@ -602,21 +600,19 @@ export default function App() {
                 </p>
 
                 {/* Project 2 Cover Image */}
-                {data.featuredProjects.valorant.imageUrl && (
-                  <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 shadow-lg">
-                    <img 
-                      src={data.featuredProjects.valorant.imageUrl} 
-                      alt={data.featuredProjects.valorant.title}
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
-                      <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase tracking-widest">
-                        {data.featuredProjects.valorant.imageOverlayText || (language === "kr" ? "로컬 크라우드 뷰잉 활성화" : "Cross-Border Viewing Party Fanbase")}
-                      </span>
-                    </div>
+                <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 shadow-lg">
+                  <img 
+                    src="https://i.ibb.co/h35WYRN/2.jpg" 
+                    alt={data.featuredProjects.valorant.title}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                    <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase tracking-widest">
+                      {language === "kr" ? "로컬 크라우드 뷰잉 활성화" : "Cross-Border Viewing Party Fanbase"}
+                    </span>
                   </div>
-                )}
+                </div>
 
                 <div className="space-y-4 pt-4 border-t border-white/5">
                   <div>
@@ -680,21 +676,19 @@ export default function App() {
                 </p>
 
                 {/* Project 3 Cover Image */}
-                {data.featuredProjects.douyu.imageUrl && (
-                  <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 shadow-lg">
-                    <img 
-                      src={data.featuredProjects.douyu.imageUrl} 
-                      alt={data.featuredProjects.douyu.title}
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
-                      <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase tracking-widest">
-                        {data.featuredProjects.douyu.imageOverlayText || (language === "kr" ? "정상급 프로 선수 스트리밍 허브 오퍼레이션" : "Elite Player Broadcast Hub Operations")}
-                      </span>
-                    </div>
+                <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/10 shadow-lg">
+                  <img 
+                    src="https://i.ibb.co/kg5T47fK/3.png" 
+                    alt={data.featuredProjects.douyu.title}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                    <span className="font-mono text-[10px] text-zinc-300 font-bold uppercase tracking-widest">
+                      {language === "kr" ? "정상급 프로 선수 스트리밍 허브 오퍼레이션" : "Elite Player Broadcast Hub Operations"}
+                    </span>
                   </div>
-                )}
+                </div>
 
                 <div className="space-y-4 pt-4 border-t border-white/5">
                   <div>
@@ -824,7 +818,7 @@ export default function App() {
                       <div className="max-w-[200px] mx-auto grid grid-cols-2 gap-2 pt-2">
                         <div className="relative group overflow-hidden rounded border border-white/10 bg-zinc-950 shadow-2xl">
                           <img 
-                            src={data.featuredProjects.douyu.reportImage1 || "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop"} 
+                            src="https://i.ibb.co/S4sCRBFj/2026-06-25-082204.png" 
                             className="w-full h-auto aspect-[1/1.414] object-cover transition duration-500 group-hover:scale-102" 
                             alt="Audit Report Page 1" 
                             referrerPolicy="no-referrer" 
@@ -835,7 +829,7 @@ export default function App() {
                         </div>
                         <div className="relative group overflow-hidden rounded border border-white/10 bg-zinc-950 shadow-2xl">
                           <img 
-                            src={data.featuredProjects.douyu.reportImage2 || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop"} 
+                            src="https://i.ibb.co/TxmTwDRy/2026-06-25-082307.png" 
                             className="w-full h-auto aspect-[1/1.414] object-cover transition duration-500 group-hover:scale-102" 
                             alt="Audit Report Page 2" 
                             referrerPolicy="no-referrer" 

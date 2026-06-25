@@ -46,28 +46,6 @@ export default function AdminPanel({
   // Current editing language in admin panel (defaults to current app language)
   const [editLang, setEditLang] = useState<"kr" | "en">(language || "kr");
 
-  const convertToRawGithubUrl = (url: string): string => {
-    if (!url) return "";
-    let trimmed = url.trim();
-    if (trimmed.includes("github.com") && !trimmed.includes("raw.githubusercontent.com")) {
-      try {
-        const parsed = new URL(trimmed);
-        if (parsed.hostname === "github.com" || parsed.hostname.endsWith(".github.com")) {
-          const parts = parsed.pathname.split("/").filter(Boolean);
-          if (parts.length >= 4 && (parts[2] === "blob" || parts[2] === "raw")) {
-            const owner = parts[0];
-            const repo = parts[1];
-            const branch = parts[3];
-            const path = parts.slice(4).join("/");
-            return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
-          }
-        }
-      } catch (e) {
-        // Return original on error
-      }
-    }
-    return trimmed;
-  };
 
   // Local copies of state for editing initialized to editLang safely
   const safeLang = localBilingualData && localBilingualData[editLang] ? editLang : "kr";
@@ -694,37 +672,7 @@ export default function AdminPanel({
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block font-mono text-[8px] text-zinc-400 uppercase">Cover Image URL</label>
-                        <input
-                          type="text"
-                          value={editedProjects.chungnam.imageUrl || ""}
-                          onChange={(e) => setEditedProjects({
-                            ...editedProjects,
-                            chungnam: { ...editedProjects.chungnam, imageUrl: convertToRawGithubUrl(e.target.value) }
-                          })}
-                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-1"
-                          placeholder="https://images.unsplash.com/photo-... or GitHub URL"
-                        />
-                        <span className="block text-[9px] text-zinc-500 font-mono mb-2">
-                          {language === "kr" 
-                            ? "💡 팁: 일반 GitHub 이미지 주소를 입력하면 자동으로 원본(raw) 이미지 주소로 변환됩니다." 
-                            : "💡 Tip: Pasting a GitHub URL auto-converts it to the raw content version."}
-                        </span>
-                        <div className="mb-2">
-                          <label className="block font-mono text-[8px] text-zinc-400 uppercase">Image Overlay Badge/Text</label>
-                          <input
-                            type="text"
-                            value={editedProjects.chungnam.imageOverlayText || ""}
-                            onChange={(e) => setEditedProjects({
-                              ...editedProjects,
-                              chungnam: { ...editedProjects.chungnam, imageOverlayText: e.target.value }
-                            })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white"
-                            placeholder="e.g. 공식 E스포츠 경기장 및 전용 베뉴"
-                          />
-                        </div>
-                      </div>
+
                       <div>
                         <label className="block font-mono text-[8px] text-zinc-400 uppercase">Challenge Statement</label>
                         <textarea
@@ -894,37 +842,7 @@ export default function AdminPanel({
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block font-mono text-[8px] text-zinc-400 uppercase">Cover Image URL</label>
-                        <input
-                          type="text"
-                          value={editedProjects.valorant.imageUrl || ""}
-                          onChange={(e) => setEditedProjects({
-                            ...editedProjects,
-                            valorant: { ...editedProjects.valorant, imageUrl: convertToRawGithubUrl(e.target.value) }
-                          })}
-                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-1"
-                          placeholder="https://images.unsplash.com/photo-... or GitHub URL"
-                        />
-                        <span className="block text-[9px] text-zinc-500 font-mono mb-2">
-                          {language === "kr" 
-                            ? "💡 팁: 일반 GitHub 이미지 주소를 입력하면 자동으로 원본(raw) 이미지 주소로 변환됩니다." 
-                            : "💡 Tip: Pasting a GitHub URL auto-converts it to the raw content version."}
-                        </span>
-                        <div className="mb-2">
-                          <label className="block font-mono text-[8px] text-zinc-400 uppercase">Image Overlay Badge/Text</label>
-                          <input
-                            type="text"
-                            value={editedProjects.valorant.imageOverlayText || ""}
-                            onChange={(e) => setEditedProjects({
-                              ...editedProjects,
-                              valorant: { ...editedProjects.valorant, imageOverlayText: e.target.value }
-                            })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white"
-                            placeholder="e.g. 로컬 크라우드 뷰잉 활성화"
-                          />
-                        </div>
-                      </div>
+
                       <div>
                         <label className="block font-mono text-[8px] text-zinc-400 uppercase">Challenge Statement</label>
                         <textarea
@@ -1028,37 +946,7 @@ export default function AdminPanel({
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block font-mono text-[8px] text-zinc-400 uppercase">Cover Image URL</label>
-                        <input
-                          type="text"
-                          value={editedProjects.douyu.imageUrl || ""}
-                          onChange={(e) => setEditedProjects({
-                            ...editedProjects,
-                            douyu: { ...editedProjects.douyu, imageUrl: convertToRawGithubUrl(e.target.value) }
-                          })}
-                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-1"
-                          placeholder="https://images.unsplash.com/photo-... or GitHub URL"
-                        />
-                        <span className="block text-[9px] text-zinc-500 font-mono mb-2">
-                          {language === "kr" 
-                            ? "💡 팁: 일반 GitHub 이미지 주소를 입력하면 자동으로 원본(raw) 이미지 주소로 변환됩니다." 
-                            : "💡 Tip: Pasting a GitHub URL auto-converts it to the raw content version."}
-                        </span>
-                        <div className="mb-2">
-                          <label className="block font-mono text-[8px] text-zinc-400 uppercase">Image Overlay Badge/Text</label>
-                          <input
-                            type="text"
-                            value={editedProjects.douyu.imageOverlayText || ""}
-                            onChange={(e) => setEditedProjects({
-                              ...editedProjects,
-                              douyu: { ...editedProjects.douyu, imageOverlayText: e.target.value }
-                            })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white"
-                            placeholder="e.g. 정상급 프로 선수 스트리밍 허브 오퍼레이션"
-                          />
-                        </div>
-                      </div>
+
                       <div>
                         <label className="block font-mono text-[8px] text-zinc-400 uppercase">Challenge Statement</label>
                         <textarea
@@ -1130,34 +1018,7 @@ export default function AdminPanel({
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 mt-1 pt-2 border-t border-white/5">
-                        <div>
-                          <label className="block font-mono text-[8px] text-zinc-400 uppercase">Audit Report Page 1 Image URL</label>
-                          <input
-                            type="text"
-                            value={editedProjects.douyu.reportImage1 || ""}
-                            onChange={(e) => setEditedProjects({
-                              ...editedProjects,
-                              douyu: { ...editedProjects.douyu, reportImage1: convertToRawGithubUrl(e.target.value) }
-                            })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono"
-                            placeholder="https://images.unsplash.com/photo-... or GitHub URL"
-                          />
-                        </div>
-                        <div>
-                          <label className="block font-mono text-[8px] text-zinc-400 uppercase">Audit Report Page 2 Image URL</label>
-                          <input
-                            type="text"
-                            value={editedProjects.douyu.reportImage2 || ""}
-                            onChange={(e) => setEditedProjects({
-                              ...editedProjects,
-                              douyu: { ...editedProjects.douyu, reportImage2: convertToRawGithubUrl(e.target.value) }
-                            })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono"
-                            placeholder="https://images.unsplash.com/photo-... or GitHub URL"
-                          />
-                        </div>
-                      </div>
+
                     </div>
                   </motion.div>
                 )}
