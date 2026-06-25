@@ -25,8 +25,8 @@ export const CAREER_HISTORY_DATA: { kr: CareerHistoryLanguageData; en: CareerHis
         year: "2026",
         main: [],
         participated: [
-          "T1 홈그라운드 (2025.04)",
-          "아시안게임 국가 대표 선발전 (2025.05)"
+          "T1 홈그라운드",
+          "아시안게임 국가 대표 선발전"
         ]
       },
       {
@@ -110,8 +110,8 @@ export const CAREER_HISTORY_DATA: { kr: CareerHistoryLanguageData; en: CareerHis
         year: "2026",
         main: [],
         participated: [
-          "T1 Home Ground (2025.04)",
-          "Asian Games National Selection Tournament (2025.05)"
+          "T1 Home Ground",
+          "Asian Games National Selection Tournament"
         ]
       },
       {
