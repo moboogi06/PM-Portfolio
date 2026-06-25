@@ -64,7 +64,7 @@ export default function App() {
   });
 
   const [language, setLanguage] = useState<"en" | "kr">(() => {
-    const savedLang = localStorage.getItem("riot_esports_portfolio_lang");
+    const savedLang = sessionStorage.getItem("riot_esports_portfolio_lang") || localStorage.getItem("riot_esports_portfolio_lang");
     if (savedLang === "en" || savedLang === "kr") {
       return savedLang;
     }
@@ -118,16 +118,17 @@ export default function App() {
 
   const handleLanguageChange = (lang: "en" | "kr") => {
     setLanguage(lang);
+    sessionStorage.setItem("riot_esports_portfolio_lang", lang);
     localStorage.setItem("riot_esports_portfolio_lang", lang);
   };
 
   const handleDefaultLangChange = (lang: "en" | "kr") => {
     setDefaultLang(lang);
     localStorage.setItem("riot_esports_default_lang", lang);
-    // If the visitor has not manually toggled the language in this session, immediately update the layout
-    if (!localStorage.getItem("riot_esports_portfolio_lang")) {
-      setLanguage(lang);
-    }
+    // Clear manual toggles in both session and local storage so the new default language is immediately respected
+    sessionStorage.removeItem("riot_esports_portfolio_lang");
+    localStorage.removeItem("riot_esports_portfolio_lang");
+    setLanguage(lang);
   };
 
   const handleLoginSuccess = () => {
