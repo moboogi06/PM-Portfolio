@@ -89,41 +89,119 @@
   background: #ff4655;
 }
 
-/* Print optimizations for clean PDF generation */
+/* Print optimizations for high-fidelity dark-theme PDF generation */
 @media print {
-  body {
-    background: #ffffff !important;
-    color: #111111 !important;
+  /* Enforce exact background colors, text colors, gradients, and shadows */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Keep the background dark slate and text bright, maintaining the exact visual identity */
+  html, body {
+    background-color: #05070c !important;
+    color: #e5e7eb !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   
-  /* Hide elements that shouldn't be printed */
+  /* Hide UI-only elements that should not be printed */
   header,
   footer,
   button,
   .admin-panel-trigger,
   .no-print,
-  .interactive-hint {
+  .interactive-hint,
+  .no-print * {
     display: none !important;
   }
 
-  /* Make containers print-friendly */
+  /* Allow sections to break across pages naturally, but prevent individual cards from splitting */
   section {
-    page-break-inside: avoid;
-    background: transparent !important;
-    color: #111111 !important;
-    border-bottom: 1px solid #ddd !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
 
-  /* Force light colors on elements for printing */
-  h1, h2, h3, h4, span, p, label, div {
-    color: #111111 !important;
-    text-shadow: none !important;
+  /* Prevent card layouts and key widgets from splitting across pages awkwardly */
+  .relative.rounded-xl,
+  .relative.rounded-2xl,
+  .glow-card-purple,
+  .glow-card-red,
+  [class*="bg-zinc-950"],
+  [class*="bg-[#090d16]"],
+  [class*="bg-[#0b0e14]"],
+  .grid > div,
+  .timeline-event-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 
-  /* Keep layout margins proper */
+  /* Prevent connection nodes or map containers from splitting */
+  #skills .grid,
+  #projects .grid,
+  #timeline .relative,
+  #impact .grid {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  /* Ensure grids and flex rows render as intended on paper */
+  .grid {
+    display: grid !important;
+  }
+
+  /* Force critical theme colors on elements so they stay visible and accurate in the PDF */
+  .text-white {
+    color: #ffffff !important;
+  }
+  .text-zinc-100 {
+    color: #f4f4f5 !important;
+  }
+  .text-zinc-200 {
+    color: #e4e4e7 !important;
+  }
+  .text-zinc-300 {
+    color: #d4d4d8 !important;
+  }
+  .text-zinc-400 {
+    color: #a1a1aa !important;
+  }
+  .text-zinc-500 {
+    color: #71717a !important;
+  }
+  .text-riot-red {
+    color: #ff4655 !important;
+  }
+  .text-brand-purple {
+    color: #9d4edd !important;
+  }
+  .text-valorant-teal {
+    color: #0df5e3 !important;
+  }
+
+  /* Standardize card backgrounds for print output */
+  .bg-zinc-950 {
+    background-color: #090d16 !important;
+  }
+  .bg-zinc-900 {
+    background-color: #121824 !important;
+  }
+
+  /* Define premium page dimensions and standard vertical layout margins */
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 15mm 12mm;
+  }
+
+  /* Ensure center alignment and proper full width without text overflowing edges */
   .mx-auto {
     margin-left: auto !important;
     margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
 

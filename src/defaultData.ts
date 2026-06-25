@@ -124,7 +124,7 @@ export const DEFAULT_PORTFOLIO_DATA: BilingualPortfolioData = {
           { value: "12,000+", label: "Offline Visitors" },
           { value: "3 Years", label: "Continuous Ownership" }
         ],
-        imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "/assets/input_file_0.png",
         imageOverlayText: "Official Arena & Stadium Center",
         tags: ["Program Management", "Government Stakeholders", "Broadcast Production"],
         youtubeLinks: {
@@ -144,7 +144,7 @@ export const DEFAULT_PORTFOLIO_DATA: BilingualPortfolioData = {
           { value: "379,920 Peak", label: "KR Feed Cumulative Concurrent Viewers" },
           { value: "3 Cities", label: "Activated Locations" }
         ],
-        imageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "/assets/input_file_1.png",
         imageOverlayText: "Cross-Border Viewing Party Fanbase",
         stakeholderMap: {
           from: "Regional Publisher Office",
@@ -164,10 +164,10 @@ export const DEFAULT_PORTFOLIO_DATA: BilingualPortfolioData = {
           { value: "25+ Players", label: "Professional Players Managed" },
           { value: "100%", label: "Contractual Delivery Rate" }
         ],
-        imageUrl: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "/assets/input_file_2.png",
         imageOverlayText: "Elite Player Broadcast Hub Operations",
-        reportImage1: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop",
-        reportImage2: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
+        reportImage1: "/assets/input_file_3.png",
+        reportImage2: "/assets/input_file_4.png",
         metrics: [
           { label: "Monthly Streaming Hours", value: "320+ Hours" },
           { label: "Audience Completion Rate", value: "94%" },
@@ -354,7 +354,7 @@ export const DEFAULT_PORTFOLIO_DATA: BilingualPortfolioData = {
           { value: "12,000+", label: "현장 오프라인 방문객" },
           { value: "3년 연속", label: "프로그램 연속 총괄" }
         ],
-        imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "/assets/input_file_0.png",
         imageOverlayText: "공식 E스포츠 경기장 및 전용 베뉴",
         tags: ["프로젝트 총괄", "공공 예산 사업", "방송 프로덕션"],
         youtubeLinks: {
@@ -374,7 +374,7 @@ export const DEFAULT_PORTFOLIO_DATA: BilingualPortfolioData = {
           { value: "379,920명", label: "KR 피드 중계 누적 동시 시청자 수" },
           { value: "3개 도시", label: "멀티시티 활성화" }
         ],
-        imageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "/assets/input_file_1.png",
         imageOverlayText: "로컬 크라우드 뷰잉 활성화",
         stakeholderMap: {
           from: "글로벌 게임사 지역 본부",
@@ -394,10 +394,10 @@ export const DEFAULT_PORTFOLIO_DATA: BilingualPortfolioData = {
           { value: "25명 이상", label: "선수단 직접 소통 관리" },
           { value: "100%", label: "글로벌 계약 완벽 이행률" }
         ],
-        imageUrl: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "/assets/input_file_2.png",
         imageOverlayText: "정상급 프로 선수 스트리밍 허브 오퍼레이션",
-        reportImage1: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop",
-        reportImage2: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
+        reportImage1: "/assets/input_file_3.png",
+        reportImage2: "/assets/input_file_4.png",
         metrics: [
           { label: "월간 송출 보장 시간", value: "320+ 시간" },
           { label: "방송 이행 완료율", value: "94%" },

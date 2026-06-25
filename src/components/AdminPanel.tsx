@@ -5,6 +5,7 @@ import {
   Settings, Award, Zap, TrendingUp, HelpCircle, Trash2, Plus 
 } from "lucide-react";
 import { PortfolioData, KPICard, SkillItem, TimelineEvent } from "../types";
+import { DEFAULT_PORTFOLIO_DATA } from "../defaultData";
 
 interface AdminPanelProps {
   bilingualData: { kr: PortfolioData; en: PortfolioData };
@@ -41,9 +42,9 @@ export default function AdminPanel({
   const [activeTab, setActiveTab] = useState<TabType>("general");
 
   // Master bilingual state
-  const [localBilingualData, setLocalBilingualData] = useState<{ kr: PortfolioData; en: PortfolioData }>(bilingualData);
+  const [localBilingualData, setLocalBilingualData] = useState<{ kr: PortfolioData; en: PortfolioData }>(bilingualData || DEFAULT_PORTFOLIO_DATA);
   // Current editing language in admin panel (defaults to current app language)
-  const [editLang, setEditLang] = useState<"kr" | "en">(language);
+  const [editLang, setEditLang] = useState<"kr" | "en">(language || "kr");
 
   const handleFileUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -60,51 +61,56 @@ export default function AdminPanel({
     reader.readAsDataURL(file);
   };
 
-  // Local copies of state for editing initialized to editLang
-  const [editedHero, setEditedHero] = useState(localBilingualData[editLang].hero);
-  const [editedAbout, setEditedAbout] = useState(localBilingualData[editLang].about);
-  const [editedKpis, setEditedKpis] = useState<KPICard[]>(localBilingualData[editLang].kpis);
-  const [editedImpact, setEditedImpact] = useState(localBilingualData[editLang].impact);
-  const [editedProjects, setEditedProjects] = useState(localBilingualData[editLang].featuredProjects);
-  const [editedSkills, setEditedSkills] = useState<SkillItem[]>(localBilingualData[editLang].skills);
-  const [editedTimeline, setEditedTimeline] = useState<TimelineEvent[]>(localBilingualData[editLang].timeline);
+  // Local copies of state for editing initialized to editLang safely
+  const safeLang = localBilingualData && localBilingualData[editLang] ? editLang : "kr";
+  const currentLangData = (localBilingualData && localBilingualData[safeLang]) || DEFAULT_PORTFOLIO_DATA.kr;
+
+  const [editedHero, setEditedHero] = useState(currentLangData.hero);
+  const [editedAbout, setEditedAbout] = useState(currentLangData.about);
+  const [editedKpis, setEditedKpis] = useState<KPICard[]>(currentLangData.kpis || []);
+  const [editedImpact, setEditedImpact] = useState(currentLangData.impact);
+  const [editedProjects, setEditedProjects] = useState(currentLangData.featuredProjects);
+  const [editedSkills, setEditedSkills] = useState<SkillItem[]>(currentLangData.skills || []);
+  const [editedTimeline, setEditedTimeline] = useState<TimelineEvent[]>(currentLangData.timeline || []);
 
   // Synchronize values when panel is opened or when edit language changes
   const syncStates = (lang: "kr" | "en" = editLang) => {
-    const targetData = localBilingualData[lang];
+    const targetData = (localBilingualData && localBilingualData[lang]) || DEFAULT_PORTFOLIO_DATA[lang];
+    if (!targetData) return;
     setEditedHero(targetData.hero);
     setEditedAbout(targetData.about);
-    setEditedKpis(targetData.kpis);
+    setEditedKpis(targetData.kpis || []);
     setEditedImpact(targetData.impact);
     setEditedProjects(targetData.featuredProjects);
-    setEditedSkills(targetData.skills);
-    setEditedTimeline(targetData.timeline);
+    setEditedSkills(targetData.skills || []);
+    setEditedTimeline(targetData.timeline || []);
   };
 
   const syncProjectImages = (
     source: typeof editedProjects,
     target: typeof editedProjects
   ): typeof editedProjects => {
+    if (!source || !target) return target || source;
     return {
       chungnam: {
-        ...target.chungnam,
-        imageUrl: source.chungnam.imageUrl,
-        reportImage1: source.chungnam.reportImage1,
-        reportImage2: source.chungnam.reportImage2,
+        ...(target.chungnam || {}),
+        imageUrl: source?.chungnam?.imageUrl ?? target?.chungnam?.imageUrl,
+        reportImage1: source?.chungnam?.reportImage1 ?? target?.chungnam?.reportImage1,
+        reportImage2: source?.chungnam?.reportImage2 ?? target?.chungnam?.reportImage2,
       },
       valorant: {
-        ...target.valorant,
-        imageUrl: source.valorant.imageUrl,
-        reportImage1: source.valorant.reportImage1,
-        reportImage2: source.valorant.reportImage2,
+        ...(target.valorant || {}),
+        imageUrl: source?.valorant?.imageUrl ?? target?.valorant?.imageUrl,
+        reportImage1: source?.valorant?.reportImage1 ?? target?.valorant?.reportImage1,
+        reportImage2: source?.valorant?.reportImage2 ?? target?.valorant?.reportImage2,
       },
       douyu: {
-        ...target.douyu,
-        imageUrl: source.douyu.imageUrl,
-        reportImage1: source.douyu.reportImage1,
-        reportImage2: source.douyu.reportImage2,
+        ...(target.douyu || {}),
+        imageUrl: source?.douyu?.imageUrl ?? target?.douyu?.imageUrl,
+        reportImage1: source?.douyu?.reportImage1 ?? target?.douyu?.reportImage1,
+        reportImage2: source?.douyu?.reportImage2 ?? target?.douyu?.reportImage2,
       }
-    };
+    } as any;
   };
 
   const handleEditLangChange = (newLang: "kr" | "en") => {
@@ -324,6 +330,7 @@ export default function AdminPanel({
                 <input
                   type="password"
                   placeholder="••••"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-lg border border-white/10 bg-zinc-900 px-4 py-3 text-center font-mono text-sm tracking-widest text-white placeholder-zinc-600 focus:border-riot-red focus:outline-none focus:ring-1 focus:ring-riot-red"

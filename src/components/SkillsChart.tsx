@@ -51,6 +51,7 @@ export default function SkillsChart({ skills }: SkillsChartProps) {
               transition={{ duration: 1.2, delay: index * 0.1, ease: "easeOut" }}
               className="h-full rounded-full bg-gradient-to-r from-brand-purple via-riot-red to-rose-400"
               style={{
+                width: `${skill.percentage}%`,
                 boxShadow: "0 0 10px rgba(255, 70, 85, 0.4)"
               }}
             />

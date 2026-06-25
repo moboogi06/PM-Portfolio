@@ -13,6 +13,7 @@ import SkillsChart from "./components/SkillsChart";
 import StakeholderMap from "./components/StakeholderMap";
 import TimelineView from "./components/TimelineView";
 import AdminPanel from "./components/AdminPanel";
+import PdfPreview from "./components/PdfPreview";
 import { CAREER_HISTORY_DATA } from "./careerHistoryData";
 
 export default function App() {
@@ -81,6 +82,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("about");
   const [showReports, setShowReports] = useState(false);
   const [showFullHistory, setShowFullHistory] = useState(false);
+  const [isPdfHovered, setIsPdfHovered] = useState(false);
 
   const data = (bilingualData && bilingualData[language]) || (bilingualData && bilingualData.kr) || DEFAULT_PORTFOLIO_DATA.kr; // fallback to Korean or defaults if somehow undefined
 
@@ -144,7 +146,7 @@ export default function App() {
     <div className={`min-h-screen bg-[#05070c] text-zinc-100 selection:bg-riot-red selection:text-white ${language === "kr" ? "font-pretendard break-keep" : ""}`}>
       {/* Upper Admin Alert Banner when enabled */}
       {isAdminActive && (
-        <div className="bg-emerald-500/10 border-b border-emerald-500/20 py-3 px-4 text-center text-xs text-emerald-400 font-mono tracking-wider flex items-center justify-center gap-2">
+        <div className="no-print bg-emerald-500/10 border-b border-emerald-500/20 py-3 px-4 text-center text-xs text-emerald-400 font-mono tracking-wider flex items-center justify-center gap-2">
           <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
           {language === "kr" 
             ? `관리 콘솔 작동 중 (${language.toUpperCase()}) — 대시보드 내 지표, 설명 및 프로젝트 데이터를 수정할 수 있습니다.` 
@@ -897,7 +899,7 @@ export default function App() {
           <TimelineView timeline={data.timeline} />
 
           {/* Complete Project History Toggler */}
-          <div className="mt-16 text-center relative z-10">
+          <div className="mt-16 text-center relative z-10 print:hidden">
             <button
               onClick={() => setShowFullHistory(!showFullHistory)}
               className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full border border-riot-red/30 bg-riot-red/5 hover:bg-riot-red/10 text-xs font-mono font-bold uppercase tracking-wider text-white transition-all shadow-lg shadow-black/40 hover:border-riot-red/50 hover:shadow-riot-red/5"
@@ -919,95 +921,86 @@ export default function App() {
             </button>
           </div>
 
-          <AnimatePresence>
-            {showFullHistory && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden mt-8 max-w-3xl mx-auto"
-              >
-                <div className="border border-white/5 bg-zinc-950/90 backdrop-blur-md rounded-2xl p-6 md:p-8 space-y-8 shadow-2xl relative">
-                  {/* Subtle decorative background gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/2 to-transparent rounded-2xl pointer-events-none" />
-                  
-                  <div className="border-b border-white/5 pb-4">
-                    <h3 className="font-display text-lg font-black text-white uppercase tracking-wider">
-                      {CAREER_HISTORY_DATA[language].title}
-                    </h3>
-                    <p className="font-mono text-[9px] text-zinc-500 tracking-widest mt-1 uppercase">
-                      ESPORTS PROJECT ARCHIVE // {language === "kr" ? "총괄 및 참여 성과 목록" : "ALL PORTFOLIO DELIVERABLES"}
-                    </p>
-                  </div>
+          <div className={`${showFullHistory ? "block" : "hidden print:block"} mt-8 max-w-3xl mx-auto print:max-w-none print:mt-12`}>
+            <div className="border border-white/5 bg-zinc-950/90 backdrop-blur-md rounded-2xl p-6 md:p-8 space-y-8 shadow-2xl relative print:shadow-none print:p-0">
+              {/* Subtle decorative background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/2 to-transparent rounded-2xl pointer-events-none print:hidden" />
+              
+              <div className="border-b border-white/5 pb-4">
+                <h3 className="font-display text-lg font-black text-white uppercase tracking-wider">
+                  {CAREER_HISTORY_DATA[language].title}
+                </h3>
+                <p className="font-mono text-[9px] text-zinc-500 tracking-widest mt-1 uppercase">
+                  ESPORTS PROJECT ARCHIVE // {language === "kr" ? "총괄 및 참여 성과 목록" : "ALL PORTFOLIO DELIVERABLES"}
+                </p>
+              </div>
 
-                  <div className="space-y-8">
-                    {CAREER_HISTORY_DATA[language].years.map((y) => (
-                      <div 
-                        key={y.year} 
-                        className="group relative grid md:grid-cols-[80px_1fr] gap-4 md:gap-6 border-l-2 border-zinc-800/60 pl-4 md:pl-0 md:border-l-0"
-                      >
-                        {/* Year Column */}
-                        <div className="flex md:flex-col md:items-start justify-start pt-1 md:border-r md:border-white/5 md:pr-4">
-                          <span className="font-display text-2xl font-black tracking-tighter text-riot-red">
-                            {y.year}
-                          </span>
+              <div className="space-y-8">
+                {CAREER_HISTORY_DATA[language].years.map((y) => (
+                  <div 
+                    key={y.year} 
+                    className="group relative grid md:grid-cols-[80px_1fr] gap-4 md:gap-6 border-l-2 border-zinc-800/60 pl-4 md:pl-0 md:border-l-0 print:break-inside-avoid print:page-break-inside-avoid"
+                  >
+                    {/* Year Column */}
+                    <div className="flex md:flex-col md:items-start justify-start pt-1 md:border-r md:border-white/5 md:pr-4">
+                      <span className="font-display text-2xl font-black tracking-tighter text-riot-red">
+                        {y.year}
+                      </span>
+                    </div>
+
+                    {/* Projects Breakdown Column */}
+                    <div className="space-y-4">
+                      {/* Main Projects */}
+                      {y.main.length > 0 && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="h-1.5 w-1.5 rounded-full bg-brand-purple" />
+                            <span className="font-mono text-[9px] text-brand-purple uppercase tracking-wider font-bold">
+                              {CAREER_HISTORY_DATA[language].mainLabel}
+                            </span>
+                          </div>
+                          <ul className="grid gap-2 sm:grid-cols-2 print:grid-cols-2">
+                            {y.main.map((p, pIdx) => (
+                              <li 
+                                key={pIdx} 
+                                className="relative flex items-start gap-2 text-xs text-zinc-200 font-medium bg-zinc-900/60 border border-white/5 p-2.5 rounded-lg hover:border-white/10 transition duration-300"
+                              >
+                                <span className="text-brand-purple font-mono select-none mt-0.5">•</span>
+                                <span>{p}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
+                      )}
 
-                        {/* Projects Breakdown Column */}
-                        <div className="space-y-4">
-                          {/* Main Projects */}
-                          {y.main.length > 0 && (
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <span className="h-1.5 w-1.5 rounded-full bg-brand-purple" />
-                                <span className="font-mono text-[9px] text-brand-purple uppercase tracking-wider font-bold">
-                                  {CAREER_HISTORY_DATA[language].mainLabel}
-                                </span>
-                              </div>
-                              <ul className="grid gap-2 sm:grid-cols-2">
-                                {y.main.map((p, pIdx) => (
-                                  <li 
-                                    key={pIdx} 
-                                    className="relative flex items-start gap-2 text-xs text-zinc-200 font-medium bg-zinc-900/60 border border-white/5 p-2.5 rounded-lg hover:border-white/10 transition duration-300"
-                                  >
-                                    <span className="text-brand-purple font-mono select-none mt-0.5">•</span>
-                                    <span>{p}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          {/* Participated / Production Support */}
-                          {y.participated.length > 0 && (
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <span className="h-1.5 w-1.5 rounded-full bg-valorant-teal" />
-                                <span className="font-mono text-[9px] text-valorant-teal uppercase tracking-wider font-bold">
-                                  {CAREER_HISTORY_DATA[language].participatedLabel}
-                                </span>
-                              </div>
-                              <ul className="grid gap-2 sm:grid-cols-2">
-                                {y.participated.map((p, pIdx) => (
-                                  <li 
-                                    key={pIdx} 
-                                    className="relative flex items-start gap-2 text-xs text-zinc-400 bg-zinc-900/30 border border-white/5 p-2.5 rounded-lg hover:border-white/10 transition duration-300"
-                                  >
-                                    <span className="text-valorant-teal font-mono select-none mt-0.5">•</span>
-                                    <span>{p}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+                      {/* Participated / Production Support */}
+                      {y.participated.length > 0 && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="h-1.5 w-1.5 rounded-full bg-valorant-teal" />
+                            <span className="font-mono text-[9px] text-valorant-teal uppercase tracking-wider font-bold">
+                              {CAREER_HISTORY_DATA[language].participatedLabel}
+                            </span>
+                          </div>
+                          <ul className="grid gap-2 sm:grid-cols-2 print:grid-cols-2">
+                            {y.participated.map((p, pIdx) => (
+                              <li 
+                                key={pIdx} 
+                                className="relative flex items-start gap-2 text-xs text-zinc-400 bg-zinc-900/30 border border-white/5 p-2.5 rounded-lg hover:border-white/10 transition duration-300"
+                              >
+                                <span className="text-valorant-teal font-mono select-none mt-0.5">•</span>
+                                <span>{p}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </div>
-                    ))}
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1040,13 +1033,25 @@ export default function App() {
             </a>
 
             {/* Resume / Export button */}
-            <button
-              onClick={() => window.print()}
-              className="no-print flex w-full items-center justify-center gap-2.5 rounded-lg border border-white/10 hover:border-white/20 bg-zinc-950 px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-300 hover:text-white active:scale-95 transition shadow-md"
+            <div 
+              className="relative w-full"
+              onMouseEnter={() => setIsPdfHovered(true)}
+              onMouseLeave={() => setIsPdfHovered(false)}
             >
-              <Download className="h-4.5 w-4.5 shrink-0" />
-              {language === "kr" ? "포트폴리오 PDF 저장" : "Save Portfolio PDF"}
-            </button>
+              <button
+                onClick={() => window.print()}
+                className="no-print flex w-full items-center justify-center gap-2.5 rounded-lg border border-white/10 hover:border-white/20 bg-zinc-950 px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-300 hover:text-white active:scale-95 transition shadow-md"
+              >
+                <Download className="h-4.5 w-4.5 shrink-0" />
+                {language === "kr" ? "포트폴리오 PDF 저장" : "Save Portfolio PDF"}
+              </button>
+
+              <AnimatePresence>
+                {isPdfHovered && (
+                  <PdfPreview language={language} data={data} />
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           <div className="mt-20 border-t border-white/5 pt-8 text-center text-xs font-mono text-zinc-600 tracking-widest uppercase font-bold">
