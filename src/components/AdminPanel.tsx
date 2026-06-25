@@ -46,19 +46,27 @@ export default function AdminPanel({
   // Current editing language in admin panel (defaults to current app language)
   const [editLang, setEditLang] = useState<"kr" | "en">(language || "kr");
 
-  const handleFileUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    callback: (base64Url: string) => void
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (typeof reader.result === "string") {
-        callback(reader.result);
+  const convertToRawGithubUrl = (url: string): string => {
+    if (!url) return "";
+    let trimmed = url.trim();
+    if (trimmed.includes("github.com") && !trimmed.includes("raw.githubusercontent.com")) {
+      try {
+        const parsed = new URL(trimmed);
+        if (parsed.hostname === "github.com" || parsed.hostname.endsWith(".github.com")) {
+          const parts = parsed.pathname.split("/").filter(Boolean);
+          if (parts.length >= 4 && (parts[2] === "blob" || parts[2] === "raw")) {
+            const owner = parts[0];
+            const repo = parts[1];
+            const branch = parts[3];
+            const path = parts.slice(4).join("/");
+            return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
+          }
+        }
+      } catch (e) {
+        // Return original on error
       }
-    };
-    reader.readAsDataURL(file);
+    }
+    return trimmed;
   };
 
   // Local copies of state for editing initialized to editLang safely
@@ -693,11 +701,16 @@ export default function AdminPanel({
                           value={editedProjects.chungnam.imageUrl || ""}
                           onChange={(e) => setEditedProjects({
                             ...editedProjects,
-                            chungnam: { ...editedProjects.chungnam, imageUrl: e.target.value }
+                            chungnam: { ...editedProjects.chungnam, imageUrl: convertToRawGithubUrl(e.target.value) }
                           })}
-                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-2"
-                          placeholder="https://images.unsplash.com/photo-..."
+                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-1"
+                          placeholder="https://images.unsplash.com/photo-... or GitHub URL"
                         />
+                        <span className="block text-[9px] text-zinc-500 font-mono mb-2">
+                          {language === "kr" 
+                            ? "💡 팁: 일반 GitHub 이미지 주소를 입력하면 자동으로 원본(raw) 이미지 주소로 변환됩니다." 
+                            : "💡 Tip: Pasting a GitHub URL auto-converts it to the raw content version."}
+                        </span>
                         <div className="mb-2">
                           <label className="block font-mono text-[8px] text-zinc-400 uppercase">Image Overlay Badge/Text</label>
                           <input
@@ -710,27 +723,6 @@ export default function AdminPanel({
                             className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white"
                             placeholder="e.g. 공식 E스포츠 경기장 및 전용 베뉴"
                           />
-                        </div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            id="upload-chungnam-image"
-                            className="hidden"
-                            onChange={(e) => handleFileUpload(e, (url) => setEditedProjects({
-                              ...editedProjects,
-                              chungnam: { ...editedProjects.chungnam, imageUrl: url }
-                            }))}
-                          />
-                          <label
-                            htmlFor="upload-chungnam-image"
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-[10px] text-zinc-300 font-mono font-bold cursor-pointer transition border border-white/5 uppercase select-none"
-                          >
-                            📁 {language === "kr" ? "이미지 파일 선택" : "Choose Image File"}
-                          </label>
-                          {editedProjects.chungnam.imageUrl?.startsWith("data:image/") && (
-                            <span className="text-[9px] text-emerald-400 font-mono">✓ Base64 Loaded</span>
-                          )}
                         </div>
                       </div>
                       <div>
@@ -909,11 +901,16 @@ export default function AdminPanel({
                           value={editedProjects.valorant.imageUrl || ""}
                           onChange={(e) => setEditedProjects({
                             ...editedProjects,
-                            valorant: { ...editedProjects.valorant, imageUrl: e.target.value }
+                            valorant: { ...editedProjects.valorant, imageUrl: convertToRawGithubUrl(e.target.value) }
                           })}
-                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-2"
-                          placeholder="https://images.unsplash.com/photo-..."
+                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-1"
+                          placeholder="https://images.unsplash.com/photo-... or GitHub URL"
                         />
+                        <span className="block text-[9px] text-zinc-500 font-mono mb-2">
+                          {language === "kr" 
+                            ? "💡 팁: 일반 GitHub 이미지 주소를 입력하면 자동으로 원본(raw) 이미지 주소로 변환됩니다." 
+                            : "💡 Tip: Pasting a GitHub URL auto-converts it to the raw content version."}
+                        </span>
                         <div className="mb-2">
                           <label className="block font-mono text-[8px] text-zinc-400 uppercase">Image Overlay Badge/Text</label>
                           <input
@@ -926,27 +923,6 @@ export default function AdminPanel({
                             className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white"
                             placeholder="e.g. 로컬 크라우드 뷰잉 활성화"
                           />
-                        </div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            id="upload-valorant-image"
-                            className="hidden"
-                            onChange={(e) => handleFileUpload(e, (url) => setEditedProjects({
-                              ...editedProjects,
-                              valorant: { ...editedProjects.valorant, imageUrl: url }
-                            }))}
-                          />
-                          <label
-                            htmlFor="upload-valorant-image"
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-[10px] text-zinc-300 font-mono font-bold cursor-pointer transition border border-white/5 uppercase select-none"
-                          >
-                            📁 {language === "kr" ? "이미지 파일 선택" : "Choose Image File"}
-                          </label>
-                          {editedProjects.valorant.imageUrl?.startsWith("data:image/") && (
-                            <span className="text-[9px] text-emerald-400 font-mono">✓ Base64 Loaded</span>
-                          )}
                         </div>
                       </div>
                       <div>
@@ -1059,11 +1035,16 @@ export default function AdminPanel({
                           value={editedProjects.douyu.imageUrl || ""}
                           onChange={(e) => setEditedProjects({
                             ...editedProjects,
-                            douyu: { ...editedProjects.douyu, imageUrl: e.target.value }
+                            douyu: { ...editedProjects.douyu, imageUrl: convertToRawGithubUrl(e.target.value) }
                           })}
-                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-2"
-                          placeholder="https://images.unsplash.com/photo-..."
+                          className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-1"
+                          placeholder="https://images.unsplash.com/photo-... or GitHub URL"
                         />
+                        <span className="block text-[9px] text-zinc-500 font-mono mb-2">
+                          {language === "kr" 
+                            ? "💡 팁: 일반 GitHub 이미지 주소를 입력하면 자동으로 원본(raw) 이미지 주소로 변환됩니다." 
+                            : "💡 Tip: Pasting a GitHub URL auto-converts it to the raw content version."}
+                        </span>
                         <div className="mb-2">
                           <label className="block font-mono text-[8px] text-zinc-400 uppercase">Image Overlay Badge/Text</label>
                           <input
@@ -1076,27 +1057,6 @@ export default function AdminPanel({
                             className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white"
                             placeholder="e.g. 정상급 프로 선수 스트리밍 허브 오퍼레이션"
                           />
-                        </div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            id="upload-douyu-image"
-                            className="hidden"
-                            onChange={(e) => handleFileUpload(e, (url) => setEditedProjects({
-                              ...editedProjects,
-                              douyu: { ...editedProjects.douyu, imageUrl: url }
-                            }))}
-                          />
-                          <label
-                            htmlFor="upload-douyu-image"
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-[10px] text-zinc-300 font-mono font-bold cursor-pointer transition border border-white/5 uppercase select-none"
-                          >
-                            📁 {language === "kr" ? "이미지 파일 선택" : "Choose Image File"}
-                          </label>
-                          {editedProjects.douyu.imageUrl?.startsWith("data:image/") && (
-                            <span className="text-[9px] text-emerald-400 font-mono">✓ Base64 Loaded</span>
-                          )}
                         </div>
                       </div>
                       <div>
@@ -1178,32 +1138,11 @@ export default function AdminPanel({
                             value={editedProjects.douyu.reportImage1 || ""}
                             onChange={(e) => setEditedProjects({
                               ...editedProjects,
-                              douyu: { ...editedProjects.douyu, reportImage1: e.target.value }
+                              douyu: { ...editedProjects.douyu, reportImage1: convertToRawGithubUrl(e.target.value) }
                             })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-2"
-                            placeholder="https://images.unsplash.com/photo-..."
+                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono"
+                            placeholder="https://images.unsplash.com/photo-... or GitHub URL"
                           />
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="file"
-                              accept="image/*"
-                              id="upload-report1-image"
-                              className="hidden"
-                              onChange={(e) => handleFileUpload(e, (url) => setEditedProjects({
-                                ...editedProjects,
-                                douyu: { ...editedProjects.douyu, reportImage1: url }
-                              }))}
-                            />
-                            <label
-                              htmlFor="upload-report1-image"
-                              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[9px] text-zinc-300 font-mono font-bold cursor-pointer transition border border-white/5 uppercase select-none"
-                            >
-                              📁 {language === "kr" ? "파일 선택" : "Choose File"}
-                            </label>
-                            {editedProjects.douyu.reportImage1?.startsWith("data:image/") && (
-                              <span className="text-[8px] text-emerald-400 font-mono">✓ Loaded</span>
-                            )}
-                          </div>
                         </div>
                         <div>
                           <label className="block font-mono text-[8px] text-zinc-400 uppercase">Audit Report Page 2 Image URL</label>
@@ -1212,32 +1151,11 @@ export default function AdminPanel({
                             value={editedProjects.douyu.reportImage2 || ""}
                             onChange={(e) => setEditedProjects({
                               ...editedProjects,
-                              douyu: { ...editedProjects.douyu, reportImage2: e.target.value }
+                              douyu: { ...editedProjects.douyu, reportImage2: convertToRawGithubUrl(e.target.value) }
                             })}
-                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono mb-2"
-                            placeholder="https://images.unsplash.com/photo-..."
+                            className="w-full rounded border border-white/10 bg-zinc-900 p-1.5 text-xs text-white font-mono"
+                            placeholder="https://images.unsplash.com/photo-... or GitHub URL"
                           />
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="file"
-                              accept="image/*"
-                              id="upload-report2-image"
-                              className="hidden"
-                              onChange={(e) => handleFileUpload(e, (url) => setEditedProjects({
-                                ...editedProjects,
-                                douyu: { ...editedProjects.douyu, reportImage2: url }
-                              }))}
-                            />
-                            <label
-                              htmlFor="upload-report2-image"
-                              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[9px] text-zinc-300 font-mono font-bold cursor-pointer transition border border-white/5 uppercase select-none"
-                            >
-                              📁 {language === "kr" ? "파일 선택" : "Choose File"}
-                            </label>
-                            {editedProjects.douyu.reportImage2?.startsWith("data:image/") && (
-                              <span className="text-[8px] text-emerald-400 font-mono">✓ Loaded</span>
-                            )}
-                          </div>
                         </div>
                       </div>
                     </div>
